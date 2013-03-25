@@ -29,19 +29,6 @@ class Proxy(object):
         else:
             raise Exception("Modification of proxy objects can lead to unexpected behavior")
     
-    def __nonzero__(self):
-        return bool(object.__getattribute__(self, "_obj"))
-    def __str__(self):
-        return str(object.__getattribute__(self, "_obj"))
-    def __repr__(self):
-        return repr(object.__getattribute__(self, "_obj"))
-    
-    def __add__(self, other):
-        return 5
-
-    #
-    # factories
-    #
     _special_names = [
         '__abs__', '__add__', '__and__', '__call__', '__cmp__', '__coerce__', 
         '__contains__', '__delitem__', '__delslice__', '__div__', '__divmod__', 
@@ -51,12 +38,12 @@ class Proxy(object):
         '__imul__', '__int__', '__invert__', '__ior__', '__ipow__', '__irshift__', 
         '__isub__', '__iter__', '__itruediv__', '__ixor__', '__le__', '__len__', 
         '__long__', '__lshift__', '__lt__', '__mod__', '__mul__', '__ne__', 
-        '__neg__', '__oct__', '__or__', '__pos__', '__pow__', '__radd__', 
-        '__rand__', '__rdiv__', '__rdivmod__', '__reduce__', '__reduce_ex__', 
+        '__neg__', '__nonzero__', '__oct__', '__or__', '__pos__', '__pow__', 
+        '__radd__', '__rand__', '__rdiv__', '__rdivmod__', '__reduce__', '__reduce_ex__', 
         '__repr__', '__reversed__', '__rfloorfiv__', '__rlshift__', '__rmod__', 
         '__rmul__', '__ror__', '__rpow__', '__rrshift__', '__rshift__', '__rsub__', 
-        '__rtruediv__', '__rxor__', '__setitem__', '__setslice__', '__sub__', 
-        '__truediv__', '__xor__', 'next',
+        '__rtruediv__', '__rxor__', '__setitem__', '__setslice__', '__str__',
+        '__sub__', '__truediv__', '__xor__', 'next',
     ]
     
     @classmethod
