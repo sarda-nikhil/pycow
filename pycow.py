@@ -1,5 +1,8 @@
+import copy
+
 class Proxy(object):
-    __slots__ = ["_obj", "__weakref__", "__slots__"]
+    __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied"]
+    _is_copied = False
     def __init__(self, obj):
         object.__setattr__(self, "_obj", obj)
     
@@ -25,9 +28,12 @@ class Proxy(object):
     def __setattr__(self, name, value):
         slots = object.__getattribute__(self, "__slots__")
         if name not in slots:
+            if not self._is_copied:
+                self._obj = copy.deepcopy(self._obj)
+                self._is_copied = True
             setattr(object.__getattribute__(self, "_obj"), name, value)
         else:
-            raise Exception("Modification of proxy objects can lead to unexpected behavior")
+            object.__setattr__(self, name, value)
     
     _special_names = [
         '__abs__', '__add__', '__and__', '__call__', '__cmp__', '__coerce__', 
