@@ -66,7 +66,7 @@ class Proxy(object):
         def make_method(name):
             def method(self, *args, **kw):
                 if name in cls._special_names and args is not ():
-                    print type(args[0])
+                    args = map(lambda x: x._obj if isinstance(x, Proxy) else x, args)
                 return getattr(object.__getattribute__(self, "_obj"), name)(*args, **kw)
             return method
         
