@@ -16,9 +16,18 @@ class Proxy(object):
             return object.__getattribute__(self, name)
 
     def __delattr__(self, name):
-        delattr(object.__getattribute__(self, "_obj"), name)
+        slots = object.__getattribute__(self, "__slots__")
+        if name not in slots:
+            delattr(object.__getattribute__(self, "_obj"), name)
+        else:
+            raise Exception("Modification of proxy objects can lead to unexpected behavior")
+
     def __setattr__(self, name, value):
-        setattr(object.__getattribute__(self, "_obj"), name, value)
+        slots = object.__getattribute__(self, "__slots__")
+        if name not in slots:
+            setattr(object.__getattribute__(self, "_obj"), name, value)
+        else:
+            raise Exception("Modification of proxy objects can lead to unexpected behavior")
     
     def __nonzero__(self):
         return bool(object.__getattribute__(self, "_obj"))
