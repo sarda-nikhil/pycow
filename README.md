@@ -1,24 +1,15 @@
-             .=     ,        =.
-     _  _   /'/    )\,/,/(_   \ \
-      `//-.|  (  ,\\)\//\)\/_  ) |
-      //___\   `\\\/\\/\/\\///'  /
-   ,-"~`-._ `"--'_   `"""`  _ \`'"~-,_
-   \       `-.  '_`.      .'_` \ ,-"~`/
-    `.__.-'`/   (-\        /-) |-.__,'
-      ||   |     \O)  /^\ (O/  |
-      `\\  |         /   `\    /
-        \\  \       /      `\ /
-         `\\ `-.  /' .---.--.\
-           `\\/`~(, '()      ('
-            /(O) \\   _,.-.,_)
-           //  \\ `\'`      /
-     jgs  / |  ||   `""""~"`
-        /'  |__||
-              `o 
+  
+           (    )
+            (oo)
+     )\.---/(O O)
+    ;       / u
+     (  .  |} )
+      |/ `;|/;
+      "   " "
 
 
-pycow
-=====
+# pycow
+
 
 Copy-on-write for Python
 
@@ -43,10 +34,11 @@ TODO:
 2) Versioned object (maintain all the deltas applied to the object and be able to go back and forth in history)
 
 
-Contributors:
--------------
+# Contributors:
+
 
 Nikhil Sarda
 
 
-Cow ascii art from http://www.chris.com/ascii/?art=animals/cows
+Cow ascii art from http://ascii.co.uk/art/cow
+
