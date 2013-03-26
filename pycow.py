@@ -1,6 +1,5 @@
 import copy
 
-
 class Proxy(object):
     """
     The proxy is a transparent wrapper that intercepts all access to the
@@ -15,10 +14,13 @@ class Proxy(object):
     Example:
     >>> #some examples here
     """
-    __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied"]
+    __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied", "_enable_partial_copy"]
+    
     _is_copied = False
-    def __init__(self, obj):
+    
+    def __init__(self, obj, _partial_copy=False):
         object.__setattr__(self, "_obj", obj)
+        object.__setattr__(self, "_enable_partial_copy", _partial_copy)
     
     def __getattribute__(self, name):
         """
@@ -42,7 +44,7 @@ class Proxy(object):
     def __setattr__(self, name, value):
         slots = object.__getattribute__(self, "__slots__")
         if name not in slots:
-            if not self._is_copied:
+            if not self._is_copied and not self._enable_partial_copy:
                 self._obj = copy.deepcopy(self._obj)
                 self._is_copied = True
             setattr(object.__getattribute__(self, "_obj"), name, value)
