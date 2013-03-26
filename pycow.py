@@ -1,6 +1,20 @@
 import copy
 
+
 class Proxy(object):
+    """
+    The proxy is a transparent wrapper that intercepts all access to the
+    underlying object. When first created, is keeps creates a shallow copy
+    of the underlying object and behaves like a shadow reference. When
+    any attribute of the underlying object is modified, the Proxy either
+    creates a complete deep copy (it deep copies the entire object it was
+    tracking) or creates a partial deep copy (it deep copies only the
+    attribute that was touched). This behavior is triggered by an appropriate
+    flag.
+
+    Example:
+    >>> #some examples here
+    """
     __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied"]
     _is_copied = False
     def __init__(self, obj):
