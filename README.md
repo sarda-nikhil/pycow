@@ -25,7 +25,7 @@ this is automatic. Forking a child process creates a shallow copy of the parent 
 the child process attempts to write to the memory space, it triggers a fault that is intercepted by the kernel and recognized as a COW fault.
 Then the OS creates a fresh copy of the parent's memory space and writes whatever was supposed to have been written to it.
 
-The current implementation of pycow is very simplistic and naive but still potentially useful.
+The current implementation of pycow supports partial COW as well as general COW functionality. The implementation requires more testing.
 
 TODO:
 
