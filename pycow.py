@@ -1,5 +1,7 @@
 import copy
 
+primitive_types = (int, bool, str, float)
+
 class Proxy(object):
     """
     The proxy is a transparent wrapper that intercepts all access to the
@@ -33,18 +35,38 @@ class Proxy(object):
         slots = object.__getattribute__(self, "__slots__")
         attr_map = object.__getattribute__(self, "_attr_map")
         if name not in slots:
-            print "Getting attribute: " + name
-            if name in attr_map:
-                print "Returning value in attr map"
-                return attr_map[name]
-            attr = getattr(object.__getattribute__(self, "_obj"), name)
-            if isinstance(attr, int):
-                return attr
-            proxy_attr = Proxy(attr)
-            attr_map[name] = proxy_attr
-            object.__setattr__(self, "_attr_map", attr_map)
-            return attr
-            #return getattr(object.__getattribute__(self, "_obj"), name)
+            if not self._is_copied:
+                print "Getting attribute: " + name
+                if name in attr_map:
+                    print "Returning value in attr map"
+                    print "Is the attribute _is_copied? " + str(attr_map[name]._is_copied)
+                    print "Is the object itself _is_copied? " + str(self._is_copied)
+                    if not self._enable_partial_copy:
+                        # If we have not enabled partial copying then deep copy the main object
+                        self._obj = copy.deepcopy(self._obj)
+                        self._is_copied = True
+
+                        # Replace all the attributes in the deep copied object with those in the attribute map
+                        for attr_map_entries in attr_map:
+                            setattr(self._obj, name, attr_map[attr_map_entries])
+                            
+                        return getattr(object.__getattribute__(self, "_obj"), name)
+                    else:
+                        return attr_map[name]
+
+                attr = getattr(object.__getattribute__(self, "_obj"), name)
+
+                if isinstance(attr, primitive_types):
+                    return attr
+
+                proxy_attr = Proxy(attr)
+                attr_map[name] = proxy_attr
+
+                object.__setattr__(self, "_attr_map", attr_map)
+
+                return proxy_attr
+            else:
+                return getattr(object.__getattribute__(self, "_obj"), name)
         else:
             return object.__getattribute__(self, name)
 
