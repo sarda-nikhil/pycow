@@ -14,9 +14,11 @@ class Proxy(object):
     Example:
     >>> #some examples here
     """
-    __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied", "_enable_partial_copy"]
+    __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied",
+                 "_enable_partial_copy", "_attr_map"]
     
     _is_copied = False
+    _attr_map = {}
     
     def __init__(self, obj, _partial_copy=False):
         object.__setattr__(self, "_obj", obj)
@@ -29,8 +31,20 @@ class Proxy(object):
         underlying object, _obj.
         """
         slots = object.__getattribute__(self, "__slots__")
+        attr_map = object.__getattribute__(self, "_attr_map")
         if name not in slots:
-            return getattr(object.__getattribute__(self, "_obj"), name)
+            print "Getting attribute: " + name
+            if name in attr_map:
+                print "Returning value in attr map"
+                return attr_map[name]
+            attr = getattr(object.__getattribute__(self, "_obj"), name)
+            if isinstance(attr, int):
+                return attr
+            proxy_attr = Proxy(attr)
+            attr_map[name] = proxy_attr
+            object.__setattr__(self, "_attr_map", attr_map)
+            return attr
+            #return getattr(object.__getattribute__(self, "_obj"), name)
         else:
             return object.__getattribute__(self, name)
 
@@ -42,15 +56,29 @@ class Proxy(object):
             raise Exception("Modification of proxy objects can lead to unexpected behavior")
 
     def __setattr__(self, name, value):
+        print "Setting attribute: " + name + " " + str(value)
         slots = object.__getattribute__(self, "__slots__")
+        attr_map = object.__getattribute__(self, "_attr_map")
         if name not in slots:
+            # If we are not partially copying, copy everything
             if not self._is_copied and not self._enable_partial_copy:
+                print "Deep copy"
                 self._obj = copy.deepcopy(self._obj)
                 self._is_copied = True
+            
+            # If partial copying is enabled, store the new value in the attribute map
+            if self._enable_partial_copy:
+                self._attr_map[name] = value
+                return
+
             setattr(object.__getattribute__(self, "_obj"), name, value)
+            if name in attr_map:
+                attr_map[name] = value
+            object.__setattr__(self, "_attr_map", attr_map)
+            print "Set attribute " + name + " " + str(value)
         else:
             object.__setattr__(self, name, value)
-    
+
     _special_names = [
         '__abs__', '__add__', '__and__', '__call__', '__cmp__', '__coerce__', 
         '__contains__', '__delitem__', '__delslice__', '__div__', '__divmod__', 
