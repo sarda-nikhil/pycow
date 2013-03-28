@@ -41,14 +41,17 @@ class Proxy(object):
                     print "Returning value in attr map"
                     print "Is the attribute _is_copied? " + str(attr_map[name]._is_copied)
                     print "Is the object itself _is_copied? " + str(self._is_copied)
-                    if not self._enable_partial_copy:
+                    if not self._enable_partial_copy and attr_map[name]._is_copied:
                         # If we have not enabled partial copying then deep copy the main object
                         self._obj = copy.deepcopy(self._obj)
                         self._is_copied = True
 
                         # Replace all the attributes in the deep copied object with those in the attribute map
-                        for attr_map_entries in attr_map:
-                            setattr(self._obj, name, attr_map[attr_map_entries])
+                        for attr_map_entry in attr_map:
+                            if not attr_map[attr_map_entry]._is_copied:
+                                attr_map[attr_map_entry]._obj = copy.deepcopy(attr_map[attr_map_entry]._obj)
+                                attr_map[attr_map_entry]._is_copied = True
+                            setattr(self._obj, attr_map_entry, attr_map[attr_map_entry]._obj)
                             
                         return getattr(object.__getattribute__(self, "_obj"), name)
                     else:
