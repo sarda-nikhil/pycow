@@ -38,9 +38,6 @@ class Proxy(object):
             if not self._is_copied:
                 print "Getting attribute: " + name
                 if name in attr_map:
-                    print "Returning value in attr map"
-                    print "Is the attribute _is_copied? " + str(attr_map[name]._is_copied)
-                    print "Is the object itself _is_copied? " + str(self._is_copied)
                     if not self._enable_partial_copy and attr_map[name]._is_copied:
                         # If we have not enabled partial copying then deep copy the main object
                         self._obj = copy.deepcopy(self._obj)
@@ -159,3 +156,17 @@ class Proxy(object):
         ins = object.__new__(theclass)
         theclass.__init__(ins, obj, *args, **kwargs)
         return ins
+
+class ProxyList(list):
+    """
+    A proxy wrapper for a normal Python list.
+    """
+    def __init__(self, obj, _partial_copy=False):
+        raise NotImplementedError()
+
+class ProxyDict(dict):
+    """
+    A proxy wrapper for a normal Python dict.
+    """
+    def __init__(self, obj, _partial_copy=False):
+        raise NotImplementedError()
