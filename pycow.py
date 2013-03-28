@@ -52,7 +52,7 @@ class Proxy(object):
                                 attr_map[attr_map_entry]._obj = copy.deepcopy(attr_map[attr_map_entry]._obj)
                                 attr_map[attr_map_entry]._is_copied = True
                             setattr(self._obj, attr_map_entry, attr_map[attr_map_entry]._obj)
-                            
+                        
                         return getattr(object.__getattribute__(self, "_obj"), name)
                     else:
                         return attr_map[name]
@@ -70,6 +70,8 @@ class Proxy(object):
                 return proxy_attr
             else:
                 return getattr(object.__getattribute__(self, "_obj"), name)
+        elif name == "__class__":
+            return getattr(object.__getattribute__(self, "_obj"), "__class__")
         else:
             return object.__getattribute__(self, name)
 
