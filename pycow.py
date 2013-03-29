@@ -14,7 +14,7 @@ class Proxy(object):
     flag.
 
     Example:
-    >>> #some examples here
+    >>> # see the tests
     """
     __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied",
                  "_enable_partial_copy", "_attr_map"]
@@ -156,17 +156,3 @@ class Proxy(object):
         ins = object.__new__(theclass)
         theclass.__init__(ins, obj, *args, **kwargs)
         return ins
-
-class ProxyList(list):
-    """
-    A proxy wrapper for a normal Python list.
-    """
-    def __init__(self, obj, _partial_copy=False):
-        raise NotImplementedError()
-
-class ProxyDict(dict):
-    """
-    A proxy wrapper for a normal Python dict.
-    """
-    def __init__(self, obj, _partial_copy=False):
-        raise NotImplementedError()
