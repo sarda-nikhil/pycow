@@ -11,6 +11,8 @@ class ProxyList(list):
     __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied",
                  "_enable_partial_copy", "_attr_map"]
 
+    _is_copied = False
+
     _list_methods = ['append', 'count', 'extend', 'index', 'insert', 'pop',
                      'remove', 'reverse', 'sort']
 
@@ -27,7 +29,34 @@ class ProxyList(list):
         object.__setattr__(self, "_obj", obj)
         object.__setattr__(self, "_enable_partial_copy", _partial_copy)
 
-        @classmethod
+    def append(self, obj):
+        self._obj.append(obj)
+
+    def count(self, obj):
+        return self._obj.count(obj)
+
+    def extend(self, iterable):
+        self._obj.extend(iterable)
+
+    def index(self, obj):
+        return self._obj.index(obj)
+
+    def insert(self, idx, obj):
+        self._obj.insert(idx, obj)
+
+    def pop(self):
+        return self._obj.pop()
+
+    def remove(self, obj):
+        self._obj.remove(obj)
+
+    def reverse(self):
+        self._obj.reverse()
+
+    def sort(self, cm='None', key='None', reverse='False'):
+        self._obj.sort(cm, key, reverse)
+
+    @classmethod
     def _create_class_proxy(cls, theclass):
         """creates a proxy for the given class"""
         
@@ -60,6 +89,6 @@ class ProxyList(list):
             theclass = cache[obj.__class__]
         except KeyError:
             cache[obj.__class__] = theclass = cls._create_class_proxy(obj.__class__)
-        ins = object.__new__(theclass)
+        ins = list.__new__(theclass)
         theclass.__init__(ins, obj, *args, **kwargs)
         return ins
