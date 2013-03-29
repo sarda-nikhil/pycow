@@ -1,4 +1,4 @@
-import pycow
+from pycow import Proxy
 
 def test_softpycow():
     class Point:
@@ -18,7 +18,7 @@ def test_softpycow():
     a = Point(1,2)
     b = Point(3,4)
     c = TwoPoints(a,b)
-    d = pycow.Proxy(c)
+    d = Proxy(c)
 
     a.x = 10
     assert c.a.x == 10
@@ -28,8 +28,8 @@ def test_softpycow():
     assert c.b.y == 20
     assert d.b.y == 20
 
-    assert isinstance(d.a, pycow.Proxy)
-    assert isinstance(d.b, pycow.Proxy)
+    assert isinstance(d.a, Proxy)
+    assert isinstance(d.b, Proxy)
     
     d.a.x = 100
     assert d.a.x == 100
