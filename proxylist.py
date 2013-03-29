@@ -23,6 +23,10 @@ class ProxyList(list):
         '__str__', '__subclasshook__', '__xor__', 'next',
     ]
 
+    def __init__(self, obj, _partial_copy=False):
+        object.__setattr__(self, "_obj", obj)
+        object.__setattr__(self, "_enable_partial_copy", _partial_copy)
+
         @classmethod
     def _create_class_proxy(cls, theclass):
         """creates a proxy for the given class"""
@@ -59,5 +63,3 @@ class ProxyList(list):
         ins = object.__new__(theclass)
         theclass.__init__(ins, obj, *args, **kwargs)
         return ins
-
-
