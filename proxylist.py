@@ -15,9 +15,6 @@ class ProxyList(list):
 
     _is_copied = False
 
-    _list_methods = ['append', 'count', 'extend', 'index', 'insert', 'pop',
-                     'remove', 'reverse', 'sort']
-
     _special_names = [
         '__add__', '__contains__', '__delitem__', '__delslice__', 
         '__eq__', '__ge__', '__getitem__', '__getslice__', '__gt__', '__hash__', 
@@ -79,7 +76,8 @@ class ProxyList(list):
         def make_method(name):
             def method(self, *args, **kw):
                 if name in cls._special_names and args is not ():
-                    args = map(lambda x: x._obj if isinstance(x, pycow.Proxy) else x, args)
+                    args = map(lambda x: x._obj if isinstance(x, pycow.Proxy) or
+                               isinstance(x, ProxyList) else x, args)
                 return getattr(object.__getattribute__(self, "_obj"), name)(*args, **kw)
             return method
         
