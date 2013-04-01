@@ -31,6 +31,7 @@ class ProxyList(list):
     def append(self, obj):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.append(obj)
 
     def count(self, obj):
@@ -39,6 +40,7 @@ class ProxyList(list):
     def extend(self, iterable):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.extend(iterable)
 
     def index(self, obj):
@@ -47,26 +49,31 @@ class ProxyList(list):
     def insert(self, idx, obj):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.insert(idx, obj)
 
     def pop(self):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         return self._obj.pop()
 
     def remove(self, obj):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.remove(obj)
 
     def reverse(self):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.reverse()
 
     def sort(self, cm='None', key='None', reverse='False'):
         if not self._is_copied:
             self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
         self._obj.sort(cm, key, reverse)
 
     @classmethod
