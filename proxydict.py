@@ -20,6 +20,59 @@ class ProxyDict(dict):
         '__str__', '__subclasshook__', '__xor__', 'next',
     ]
 
+    def clear(self):
+        if not self._is_copied:
+            self._obj = {}
+            self._is_copied = True
+
+    def copy(self):
+        return self._obj.copy()
+
+    def get(self, k, d=None):
+        return self._obj.get(k, d)
+
+    def has_key(self, key):
+        return self._obj.has_key(key)
+
+    def items(self):
+        return self._obj.items()
+
+    def iteritems(self):
+        return self._obj.iteritems()
+
+    def iterkeys(self):
+        return self._obj.iterkeys()
+
+    def itervalues(self):
+        return self._obj.itervalues()
+
+    def keys(self):
+        return self._obj.keys()
+
+    def pop(self, k, d=None):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
+        return self._obj.pop(k, d)
+
+    def popitem(self):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
+            self._is_copied = True
+        return self._obj.popitem()
+
+    def values(self):
+        return self._obj.values()
+
+    def viewitems(self):
+        return self._obj.viewitems()
+
+    def viewkeys(self):
+        return self._obj.viewkeys()
+
+    def viewvalues(self):
+        return self._obj.viewvalues()
+
     @classmethod
     def _create_class_proxy(cls, theclass):
         """creates a proxy for the given class"""
