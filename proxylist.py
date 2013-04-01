@@ -6,7 +6,9 @@ class ProxyList(list):
     A proxy wrapper for a normal Python list.
 
     A lot of functionality is being reproduced from Proxy. Inheriting Proxy would
-    simplify things a lot but I get type errors when I try to do so.
+    simplify things a lot but I get type errors when I try to do so. It is not exactly
+    clear what a partial copy entails for a ProxyList so we will not consider this
+    option for now.
     """
     __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied",
                  "_enable_partial_copy", "_attr_map"]
@@ -30,30 +32,44 @@ class ProxyList(list):
         object.__setattr__(self, "_enable_partial_copy", _partial_copy)
 
     def append(self, obj):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.append(obj)
 
     def count(self, obj):
         return self._obj.count(obj)
 
     def extend(self, iterable):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.extend(iterable)
 
     def index(self, obj):
         return self._obj.index(obj)
 
     def insert(self, idx, obj):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.insert(idx, obj)
 
     def pop(self):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         return self._obj.pop()
 
     def remove(self, obj):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.remove(obj)
 
     def reverse(self):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.reverse()
 
     def sort(self, cm='None', key='None', reverse='False'):
+        if not self._is_copied:
+            self._obj = copy.deepcopy(self._obj)
         self._obj.sort(cm, key, reverse)
 
     @classmethod
