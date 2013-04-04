@@ -18,7 +18,7 @@ def test():
     a = Point(1,2)
     b = Point(3,4)
     c = TwoPoints(a,b)
-    d = Proxy(c, True)
+    d = Proxy(c)
 
     a.x = 10
     assert c.a.x == 10
@@ -37,5 +37,6 @@ def test():
     assert a.x == 10
     assert c.a.x == 10
     assert isinstance(d.a, Point)
-    assert isinstance(d.b, Proxy)
-    assert isinstance(d, Proxy)
+    assert isinstance(d.b, Point)
+    assert isinstance(d, TwoPoints)
+
