@@ -1,6 +1,4 @@
 import copy
-from proxylist import ProxyList
-from proxydict import ProxyDict
 
 primitive_types = (int, bool, float, long, complex)
 sequence_types = (str, unicode, list, tuple, bytearray, buffer, xrange)
@@ -49,21 +47,22 @@ class Proxy(object):
     def __getattribute__(self, name):
         """
         In order to fetch the attribute of the underlying object,
-        the proxy redirects it the call to the reference of the
+        the proxy redirects the call to the reference of the
         underlying object, _obj.
         """
         slots = object.__getattribute__(self, "__slots__")
         attr_map = object.__getattribute__(self, "_attr_map")
         if name not in slots:
             if not self._is_copied:
-                print "Getting attribute: " + name
                 if name in attr_map:
                     if not self._enable_partial_copy and attr_map[name]._is_copied:
-                        # If we have not enabled partial copying then deep copy the main object
+                        # If we have not enabled partial copying then deep copy the
+                        # reference to the main object
                         self._obj = copy.deepcopy(self._obj)
                         self._is_copied = True
 
-                        # Replace all the attributes in the deep copied object with those in the attribute map
+                        # Replace all the attributes in the deep copied object with
+                        # those in the attribute map
                         for attr_map_entry in attr_map:
                             if not attr_map[attr_map_entry]._is_copied:
                                 attr_map[attr_map_entry]._obj = copy.deepcopy(attr_map[attr_map_entry]._obj)
@@ -100,13 +99,11 @@ class Proxy(object):
             raise Exception("Modification of proxy objects can lead to unexpected behavior")
 
     def __setattr__(self, name, value):
-        print "Setting attribute: " + name + " " + str(value)
         slots = object.__getattribute__(self, "__slots__")
         attr_map = object.__getattribute__(self, "_attr_map")
         if name not in slots:
             # If we are not partially copying, copy everything
             if not self._is_copied and not self._enable_partial_copy:
-                print "Deep copy"
                 self._obj = copy.deepcopy(self._obj)
                 self._is_copied = True
             
@@ -119,7 +116,6 @@ class Proxy(object):
             if name in attr_map:
                 attr_map[name] = value
             object.__setattr__(self, "_attr_map", attr_map)
-            print "Set attribute " + name + " " + str(value)
         else:
             object.__setattr__(self, name, value)
 

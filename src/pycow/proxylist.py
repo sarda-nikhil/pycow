@@ -1,5 +1,5 @@
 import copy
-import pycow
+from proxy import Proxy
 
 class ProxyList(list):
     """
@@ -83,7 +83,7 @@ class ProxyList(list):
         def make_method(name):
             def method(self, *args, **kw):
                 if name in cls._special_names and args is not ():
-                    args = map(lambda x: x._obj if isinstance(x, pycow.Proxy) or
+                    args = map(lambda x: x._obj if isinstance(x, Proxy) or
                                isinstance(x, ProxyList) else x, args)
                 return getattr(object.__getattribute__(self, "_obj"), name)(*args, **kw)
             return method
