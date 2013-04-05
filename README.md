@@ -41,14 +41,6 @@ The current implementation of pycow supports partial COW as well
 as general COW functionality. The implementation requires more 
 testing. Proxy versions of lists and dicts have been implemented.
 
-TODO:
-
-1) Object rollback (rollback an object to its original state)
-
-2) Versioned object (maintain all the deltas applied to the object 
-and be able to go back and forth in history)
-
-
 # Contributors:
 
 Nikhil Sarda
