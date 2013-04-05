@@ -8,7 +8,7 @@ sequence_types = (str, unicode, list, tuple, bytearray, buffer, xrange)
 class Proxy(object):
     """
     The proxy is a transparent wrapper that intercepts all access to the
-    underlying object. When first created, is keeps creates a shallow copy
+    underlying object. When first created, it creates a shallow copy
     of the underlying object and behaves like a shadow reference. When
     any attribute of the underlying object is modified, the Proxy either
     creates a complete deep copy (it deep copies the entire object it was
@@ -17,7 +17,24 @@ class Proxy(object):
     flag.
 
     Example:
-    >>> # see the tests
+    >>> class Point:
+    ...     x = None
+    ...     y = None
+    ...     def __init__(self, x, y):
+    ...         self.x = x
+    ...         self.y = y
+
+    >>> class TwoPoints:
+    ...     a = None
+    ...     b = None
+    ...     def __init__(self, a, b):
+    ...         self.a = a
+    ...         self.b = b
+
+    >>> a = Point(1,2)
+    >>> b = Point(3,4)
+    >>> c = TwoPoints(a,b)
+    >>> d = Proxy(c)
     """
     __slots__ = ["_obj", "__weakref__", "__slots__", "_is_copied",
                  "_enable_partial_copy", "_attr_map"]
