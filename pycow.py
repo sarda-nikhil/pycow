@@ -1,6 +1,9 @@
 import copy
+from proxylist import ProxyList
+from proxydict import ProxyDict
 
-primitive_types = (int, bool, str, float)
+primitive_types = (int, bool, float, long, complex)
+sequence_types = (str, unicode, list, tuple, bytearray, buffer, xrange)
 
 class Proxy(object):
     """
