@@ -41,6 +41,41 @@ The current implementation of pycow supports partial COW as well
 as general COW functionality. The implementation requires more 
 testing. Proxy versions of lists and dicts have been implemented.
 
+# Usage
+
+Suppose you define a class as follows:
+
+    class Point:
+        x = None
+        y = None
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+
+You can initialize the class like so:
+
+    >>> a = Point(1, 2)
+
+Now, we will create a copy-on-write version of the above object:
+
+    >>> b = Proxy(a)
+    >>> b.x
+    1
+    >>> a.x = 42
+    >>> b.x
+    42
+
+For now, b is just a simple reference to a. However, when we modify
+b, the copy-on-write mechanism kicks in and we see the magic.
+
+    >>> b.x = 420
+    >>> a.x
+    42
+    >>> b.x
+    420
+
+
 # Contributors:
 
 Nikhil Sarda
